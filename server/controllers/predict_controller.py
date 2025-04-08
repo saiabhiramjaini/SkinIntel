@@ -7,10 +7,10 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def predict():
-    if "file" not in request.files:  # 🔄 FIXED: Match Postman Key
+    if "file" not in request.files:
         return jsonify({"error": "No image uploaded"}), 400
 
-    file = request.files["file"]  # 🔄 FIXED: Match Postman Key
+    file = request.files["file"]
     filename = secure_filename(file.filename)
     filepath = os.path.join(UPLOAD_FOLDER, filename)
     file.save(filepath)

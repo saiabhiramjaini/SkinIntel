@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +22,8 @@ import {
   FileUp,
   RefreshCw,
   Info,
+  Video,
+  VideoOff,
 } from "lucide-react";
 import { diseaseInfo } from "@/utils/diseaseInfo";
 
@@ -36,7 +38,104 @@ export const DetectionPage = () => {
     severity: "mild" | "moderate" | "severe";
   }>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  // Handle camera activation/deactivation
+  useEffect(() => {
+    if (isCameraActive) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+
+    return () => {
+      stopCamera();
+    };
+  }, [isCameraActive, facingMode]);
+
+  const startCamera = async () => {
+    try {
+      const constraints = {
+        video: { 
+          facingMode,
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      };
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      streamRef.current = stream;
+    } catch (err) {
+      console.error("Error accessing camera:", err);
+      setError("Could not access camera. Please check permissions.");
+      setIsCameraActive(false);
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  const capturePhoto = () => {
+    if (!videoRef.current || !streamRef.current) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], `capture-${Date.now()}.jpg`, {
+            type: 'image/jpeg',
+            lastModified: Date.now()
+          });
+          
+          handleCapturedImage(file);
+        }
+      }, 'image/jpeg', 0.9);
+    }
+  };
+
+  const handleCapturedImage = (file: File) => {
+    setFile(file);
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    
+    // Turn off camera after capture
+    setIsCameraActive(false);
+  };
+
+  const toggleCamera = () => {
+    setIsCameraActive(!isCameraActive);
+    setError(null);
+  };
+
+  const switchCamera = () => {
+    setFacingMode(facingMode === "user" ? "environment" : "user");
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
@@ -137,10 +236,12 @@ export const DetectionPage = () => {
       const severity = ["mild", "moderate", "severe"][Math.floor(Math.random() * 3)] as "mild" | "moderate" | "severe";
 
       setResult({
-        disease: data.class,
+        disease: data.prediction,
         confidence: data.confidence * 100,
         severity,
       });
+
+      console.log(result)
       setProgress(100);
     } catch (err) {
       setError("An error occurred during detection. Please try again.");
@@ -157,6 +258,7 @@ export const DetectionPage = () => {
     setResult(null);
     setError(null);
     setProgress(0);
+    setIsCameraActive(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -219,8 +321,7 @@ export const DetectionPage = () => {
               <CardHeader>
                 <CardTitle>Upload Skin Image</CardTitle>
                 <CardDescription>
-                  Upload a clear dermatoscopic image for accurate disease
-                  detection
+                  Upload a clear dermatoscopic image or capture one using your camera
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -233,66 +334,117 @@ export const DetectionPage = () => {
                   id="image-upload"
                 />
 
-                <div
-                  className={`border-2 border-dashed rounded-lg p-8 text-center ${
-                    preview
-                      ? "border-indigo-300 bg-indigo-50"
-                      : "border-slate-300 hover:border-indigo-300 hover:bg-slate-50"
-                  } transition-colors cursor-pointer`}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  {preview ? (
-                    <div className="space-y-4">
-                      <div className="relative w-full h-64 mx-auto overflow-hidden rounded-lg">
-                        <img
-                          src={preview || "/placeholder.svg"}
-                          alt="Image preview"
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            resetForm();
-                          }}
-                          className="absolute top-2 right-2 bg-white/80 p-1 rounded-full hover:bg-white"
+                {isCameraActive ? (
+                  <div className="space-y-4">
+                    <div className="relative w-full h-64 mx-auto overflow-hidden rounded-lg bg-black">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
+                        <Button
+                          onClick={capturePhoto}
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white"
+                          size="lg"
                         >
-                          <X className="h-5 w-5 text-slate-700" />
-                        </button>
-                      </div>
-                      <div className="text-sm text-slate-500">
-                        {file?.name} (
-                        {file ? (file.size / 1024 / 1024).toFixed(2) : "0.00"}{" "}
-                        MB)
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      <div className="mx-auto w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <Upload className="h-8 w-8 text-indigo-600" />
-                      </div>
-                      <div>
-                        <p className="text-lg font-medium text-slate-700">
-                          Drag and drop your image here
-                        </p>
-                        <p className="text-sm text-slate-500 mt-1">
-                          or click to browse files (JPEG, PNG, etc.)
-                        </p>
-                      </div>
-                      <div className="flex justify-center gap-4 pt-2">
-                        <div className="flex items-center text-xs text-slate-500">
-                          <FileUp className="h-3 w-3 mr-1" />
-                          <span>Upload file</span>
-                        </div>
-                        <div className="flex items-center text-xs text-slate-500">
-                          <Camera className="h-3 w-3 mr-1" />
-                          <span>Take photo</span>
-                        </div>
+                          <Camera className="h-5 w-5 mr-2" />
+                          Capture Photo
+                        </Button>
+                        <Button
+                          onClick={switchCamera}
+                          variant="outline"
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-white/30"
+                          size="icon"
+                        >
+                          <RefreshCw className="h-5 w-5" />
+                        </Button>
                       </div>
                     </div>
-                  )}
-                </div>
+                    <Button
+                      onClick={toggleCamera}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <VideoOff className="h-4 w-4 mr-2" />
+                      Turn Off Camera
+                    </Button>
+                  </div>
+                ) : (
+                  <div
+                    className={`border-2 border-dashed rounded-lg p-8 text-center ${
+                      preview
+                        ? "border-indigo-300 bg-indigo-50"
+                        : "border-slate-300 hover:border-indigo-300 hover:bg-slate-50"
+                    } transition-colors cursor-pointer`}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    {preview ? (
+                      <div className="space-y-4">
+                        <div className="relative w-full h-64 mx-auto overflow-hidden rounded-lg">
+                          <img
+                            src={preview || "/placeholder.svg"}
+                            alt="Image preview"
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              resetForm();
+                            }}
+                            className="absolute top-2 right-2 bg-white/80 p-1 rounded-full hover:bg-white"
+                          >
+                            <X className="h-5 w-5 text-slate-700" />
+                          </button>
+                        </div>
+                        <div className="text-sm text-slate-500">
+                          {file?.name} (
+                          {file ? (file.size / 1024 / 1024).toFixed(2) : "0.00"}{" "}
+                          MB)
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="mx-auto w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                          <Upload className="h-8 w-8 text-indigo-600" />
+                        </div>
+                        <div>
+                          <p className="text-lg font-medium text-slate-700">
+                            Drag and drop your image here
+                          </p>
+                          <p className="text-sm text-slate-500 mt-1">
+                            or click to browse files (JPEG, PNG, etc.)
+                          </p>
+                        </div>
+                        <div className="flex justify-center gap-4 pt-2">
+                          <div className="flex items-center text-xs text-slate-500">
+                            <FileUp className="h-3 w-3 mr-1" />
+                            <span>Upload file</span>
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500">
+                            <Camera className="h-3 w-3 mr-1" />
+                            <span>Take photo</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {!isCameraActive && !preview && (
+                  <Button
+                    onClick={toggleCamera}
+                    variant="outline"
+                    className="w-full mt-4"
+                  >
+                    <Video className="h-4 w-4 mr-2" />
+                    {isCameraActive ? "Turn Off Camera" : "Use Camera"}
+                  </Button>
+                )}
 
                 {error && (
                   <Alert variant="destructive" className="mt-4">
@@ -327,6 +479,7 @@ export const DetectionPage = () => {
               </CardFooter>
             </Card>
 
+            {/* Rest of your existing code remains the same */}
             {isLoading && (
               <Card className="border border-slate-200 bg-white/95 backdrop-blur-sm shadow-md">
                 <CardHeader>
@@ -411,7 +564,7 @@ export const DetectionPage = () => {
             </Card>
           </div>
 
-          {/* Results Section */}
+          {/* Results Section (remains the same) */}
           <div className="space-y-6">
             {result ? (
               <>
@@ -589,15 +742,23 @@ export const DetectionPage = () => {
                     No Results Yet
                   </h3>
                   <p className="text-slate-600">
-                    Upload a dermatoscopic image and click "Detect Disease" to
-                    analyze for skin conditions.
+                    Upload a dermatoscopic image or capture one using your camera, then click "Detect Disease" to analyze for skin conditions.
                   </p>
-                  <div className="pt-4">
+                  <div className="pt-4 flex gap-2 justify-center">
                     <Button
                       onClick={() => fileInputRef.current?.click()}
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
+                      variant="outline"
+                      className="border-indigo-200 text-indigo-600 hover:bg-indigo-50"
                     >
                       Upload Image
+                    </Button>
+                    <Button
+                      onClick={toggleCamera}
+                      variant="outline"
+                      className="border-indigo-200 text-indigo-600 hover:bg-indigo-50"
+                    >
+                      <Camera className="h-4 w-4 mr-2" />
+                      Use Camera
                     </Button>
                   </div>
                 </div>

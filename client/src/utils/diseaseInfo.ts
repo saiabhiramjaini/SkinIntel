@@ -1,295 +1,167 @@
 export const diseaseInfo = {
-  Melanoma: {
-    description:
-      "Melanoma is a type of skin cancer that develops from the pigment-producing cells known as melanocytes. It is the most dangerous form of skin cancer.",
+  "Melanoma": {
+    description: "Melanoma is the most serious type of skin cancer that develops in the melanocytes (cells that produce melanin).",
     symptoms: [
-      "Asymmetrical moles",
-      "Border irregularity",
-      "Color variations",
-      "Diameter larger than 6mm",
-      "Evolving size, shape, or color",
+      "New spot on the skin that changes in size, shape, or color",
+      "Asymmetrical mole with irregular borders",
+      "Multicolored growth",
+      "Itching or bleeding mole",
+      "Dark lesion under nail or on mucous membranes"
     ],
     riskFactors: [
-      "UV exposure",
-      "Fair skin",
-      "Family history",
-      "Multiple moles",
-      "Weakened immune system",
+      "UV exposure from sun or tanning beds",
+      "Fair skin, light hair, and light eyes",
+      "History of sunburns",
+      "Family history of melanoma",
+      "Weakened immune system"
     ],
     nextSteps: [
-      "Consult a dermatologist immediately",
-      "Biopsy may be required",
-      "Consider imaging studies",
-      "Discuss treatment options",
-    ],
-  },
-  Psoriasis: {
-    description:
-      "Psoriasis is a chronic autoimmune condition that causes rapid buildup of skin cells, resulting in scaling on the skin's surface.",
-    symptoms: [
-      "Red patches covered with silvery scales",
-      "Dry, cracked skin that may bleed",
-      "Itching or burning",
-      "Thickened or pitted nails",
-      "Swollen and stiff joints",
-    ],
-    riskFactors: [
-      "Family history",
-      "Stress",
-      "Obesity",
-      "Smoking",
-      "Certain medications",
-    ],
-    nextSteps: [
-      "Consult a dermatologist",
-      "Topical treatments",
-      "Light therapy",
-      "Oral or injected medications",
-    ],
-  },
-  Eczema: {
-    description:
-      "Eczema (atopic dermatitis) is a condition that makes your skin red and itchy. It's common in children but can occur at any age.",
-    symptoms: [
-      "Dry, sensitive skin",
-      "Intense itching",
-      "Red to brownish-gray patches",
-      "Small, raised bumps",
-      "Thickened, cracked, or scaly skin",
-    ],
-    riskFactors: [
-      "Family history of eczema",
-      "Allergies or asthma",
-      "Living in urban areas",
-      "Exposure to certain chemicals",
-      "Cold, dry climates",
-    ],
-    nextSteps: [
-      "Moisturize regularly",
-      "Identify and avoid triggers",
-      "Topical corticosteroids",
-      "Antihistamines for itching",
-    ],
+      "Immediate dermatologist consultation",
+      "Biopsy of suspicious lesion",
+      "Wide local excision surgery",
+      "Possible sentinel lymph node biopsy",
+      "Regular skin self-exams"
+    ]
   },
   "Basal Cell Carcinoma": {
-    description:
-      "Basal cell carcinoma is the most common type of skin cancer and the most frequently occurring form of all cancers.",
+    description: "The most common and least dangerous form of skin cancer that appears as slow-growing lumps on sun-exposed areas.",
     symptoms: [
       "Pearly or waxy bump",
       "Flat, flesh-colored or brown scar-like lesion",
-      "Bleeding or scabbing sore",
-      "Raised reddish patch",
+      "Bleeding or scabbing sore that heals and returns",
+      "Slightly raised, pink growth with rolled edges"
     ],
     riskFactors: [
-      "Excessive sun exposure",
-      "Fair skin",
-      "Increasing age",
-      "Personal history of skin cancer",
-      "Radiation therapy",
+      "Chronic sun exposure",
+      "Fair skin that freckles or burns easily",
+      "Age over 50 years",
+      "History of radiation treatment",
+      "Exposure to arsenic"
     ],
     nextSteps: [
-      "Surgical removal",
-      "Mohs surgery",
-      "Radiation therapy",
-      "Regular skin checks",
-    ],
+      "Dermatologist evaluation",
+      "Surgical excision (Mohs surgery for facial lesions)",
+      "Electrodessication and curettage",
+      "Topical treatments for superficial lesions",
+      "Regular follow-up skin checks"
+    ]
   },
-  "Acne Vulgaris": {
-    description:
-      "Acne vulgaris is a long-term skin condition characterized by areas of blackheads, whiteheads, pimples, greasy skin, and scarring.",
+  "Actinic Keratoses": {
+    description: "Rough, scaly precancerous skin patches caused by years of sun exposure that may develop into squamous cell carcinoma.",
     symptoms: [
-      "Whiteheads",
-      "Blackheads",
-      "Papules",
-      "Pustules",
-      "Nodules or cysts",
+      "Rough, dry, scaly patches (1mm to 3cm)",
+      "Pink, red or brown coloration",
+      "Flat or slightly raised texture",
+      "Burning or itching sensation",
+      "Hard, wart-like surface"
     ],
     riskFactors: [
-      "Hormonal changes",
-      "Family history",
-      "Greasy or oily substances",
-      "Friction or pressure on skin",
-      "Stress",
+      "Long-term sun exposure",
+      "Fair skin that burns easily",
+      "Age over 40 years",
+      "Living in sunny climates",
+      "Weakened immune system"
     ],
     nextSteps: [
-      "Topical treatments",
-      "Oral antibiotics",
-      "Retinoids",
-      "Lifestyle modifications",
-    ],
+      "Dermatologist evaluation",
+      "Cryotherapy (freezing with liquid nitrogen)",
+      "Topical chemotherapy creams",
+      "Photodynamic therapy",
+      "Chemical peels for multiple lesions"
+    ]
   },
-  Rosacea: {
-    description:
-      "Rosacea is a chronic inflammatory skin condition that causes redness, visible blood vessels, and sometimes small, pus-filled bumps on the face.",
+  "Benign Keratosis": {
+    description: "Harmless, non-cancerous skin growths that appear as waxy, stuck-on lesions, common in older adults.",
     symptoms: [
-      "Facial redness",
-      "Swollen red bumps",
-      "Eye problems",
-      "Enlarged nose",
-      "Visible blood vessels",
-    ],
-    riskFactors: [
-      "Fair skin",
-      "Family history",
-      "Age between 30 and 50",
-      "Women more than men",
-      "Certain triggers like spicy food",
-    ],
-    nextSteps: [
-      "Identify and avoid triggers",
-      "Topical medications",
-      "Oral antibiotics",
-      "Laser therapy",
-    ],
-  },
-  "Actinic Keratosis": {
-    description:
-      "Actinic keratosis is a rough, scaly patch on the skin caused by years of sun exposure. It can potentially develop into skin cancer.",
-    symptoms: [
-      "Rough, dry, or scaly patches",
-      "Flat or slightly raised bumps",
-      "Red, pink, or brown coloration",
-      "Itching or burning sensation",
-    ],
-    riskFactors: [
-      "Prolonged sun exposure",
-      "Fair skin",
-      "Older age",
-      "History of sunburns",
-      "Weakened immune system",
-    ],
-    nextSteps: [
-      "Consult a dermatologist",
-      "Cryotherapy",
-      "Topical treatments",
-      "Regular skin checks",
-    ],
-  },
-  Dermatofibroma: {
-    description:
-      "Dermatofibroma is a common benign skin growth that appears as a firm, small bump, often on the legs.",
-    symptoms: [
-      "Small, firm bump",
-      "Red, brown, or purple coloration",
-      "Tenderness when touched",
-      "Dimple when pinched",
-    ],
-    riskFactors: [
-      "Minor skin injuries",
-      "Insect bites",
-      "Age (common in adults)",
-      "Gender (more common in women)",
-    ],
-    nextSteps: [
-      "Monitor for changes",
-      "Surgical removal if symptomatic",
-      "Consult a dermatologist",
-    ],
-  },
-  Nevus: {
-    description:
-      "A nevus, or mole, is a common benign growth on the skin composed of melanocytes. Most are harmless, but some can develop into melanoma.",
-    symptoms: [
-      "Round or oval shape",
-      "Uniform color (brown, black, or pink)",
-      "Flat or raised surface",
-      "Smooth or rough texture",
-    ],
-    riskFactors: [
-      "Sun exposure",
-      "Fair skin",
-      "Family history of moles",
-      "Genetic predisposition",
-    ],
-    nextSteps: [
-      "Regular skin checks",
-      "Monitor for changes in size, shape, or color",
-      "Biopsy if suspicious",
-    ],
-  },
-  "Pigmented Benign Keratosis": {
-    description:
-      "Pigmented benign keratosis is a harmless skin growth that appears as a dark, wart-like patch, often mistaken for melanoma.",
-    symptoms: [
-      "Dark brown or black patch",
-      "Waxy or scaly texture",
-      "Flat or slightly raised",
-      "Well-defined borders",
-    ],
-    riskFactors: [
-      "Older age",
-      "Sun exposure",
-      "Fair skin",
-      "Genetic predisposition",
-    ],
-    nextSteps: [
-      "Consult a dermatologist",
-      "Biopsy to confirm diagnosis",
-      "Surgical removal if desired",
-    ],
-  },
-  "Seborrheic Keratosis": {
-    description:
-      "Seborrheic keratosis is a common noncancerous skin growth that appears as a brown, black, or light tan growth with a waxy texture.",
-    symptoms: [
-      "Waxy, stuck-on appearance",
-      "Round or oval shape",
-      "Brown, black, or tan coloration",
+      "Brown, black or tan growths",
+      "Waxy, scaly, slightly elevated appearance",
+      "Round or oval shape (3mm to 2.5cm)",
       "Itching or irritation",
+      "Appear on face, chest, shoulders or back"
     ],
     riskFactors: [
-      "Older age",
+      "Aging (most common after age 50)",
       "Family history",
       "Sun exposure",
       "Fair skin",
+      "Hormonal changes"
     ],
     nextSteps: [
-      "Monitor for changes",
-      "Cryotherapy or laser removal",
-      "Consult a dermatologist",
-    ],
+      "Dermatologist confirmation",
+      "Cryotherapy for bothersome lesions",
+      "Curettage (scraping off)",
+      "Electrocautery",
+      "No treatment needed if asymptomatic"
+    ]
   },
-  "Squamous Cell Carcinoma": {
-    description:
-      "Squamous cell carcinoma is a type of skin cancer that arises from squamous cells in the outer layers of the skin.",
+  "Dermatofibroma": {
+    description: "Common, benign fibrous skin nodules that typically develop on the legs of adults.",
     symptoms: [
-      "Firm, red nodule",
-      "Flat sore with a scaly crust",
-      "New sore or raised area on an old scar",
-      "Wart-like growth",
+      "Small (3-10mm), firm bump",
+      "Red, brown or purple coloration",
+      "Dimple sign (indents when pinched)",
+      "Slight tenderness when touched",
+      "Persistent, doesn't resolve"
     ],
     riskFactors: [
-      "Prolonged sun exposure",
-      "Fair skin",
-      "History of sunburns",
-      "Weakened immune system",
+      "Minor skin trauma (insect bite, splinter)",
+      "More common in women",
+      "Age 20-50 years",
+      "Leg location most common"
     ],
     nextSteps: [
-      "Consult a dermatologist immediately",
-      "Biopsy to confirm diagnosis",
-      "Surgical removal or radiation therapy",
-    ],
+      "Dermatologist confirmation",
+      "Monitor for changes",
+      "Surgical excision if symptomatic",
+      "No treatment needed if asymptomatic",
+      "Avoid unnecessary removal (may scar)"
+    ]
   },
-  "Vascular Lesion": {
-    description:
-      "Vascular lesions are abnormalities of blood vessels that appear as red or purple marks on the skin, such as hemangiomas or port-wine stains.",
+  "Melanocytic Nevi": {
+    description: "Common moles composed of melanocytes that are typically harmless but should be monitored for changes.",
     symptoms: [
-      "Red or purple patches",
-      "Raised or flat marks",
+      "Round or oval shape",
+      "Uniform color (tan, brown, black)",
+      "Flat or raised surface",
+      "Distinct border",
+      "Smaller than 6mm diameter"
+    ],
+    riskFactors: [
+      "Sun exposure",
+      "Fair skin",
+      "Family history of atypical moles",
+      "Large number of moles (>50)",
+      "Congenital moles present at birth"
+    ],
+    nextSteps: [
+      "Regular skin self-exams",
+      "Annual dermatologist checks",
+      "Photographic monitoring",
+      "Biopsy if changing",
+      "Sun protection to prevent new moles"
+    ]
+  },
+  "Vascular Lesions": {
+    description: "Abnormal clusters of blood vessels that create visible marks on the skin, including hemangiomas and port-wine stains.",
+    symptoms: [
+      "Red, pink or purple skin marks",
+      "Flat or raised texture",
       "Present at birth or develop later",
-      "May bleed or ulcerate",
+      "May grow during first year of life",
+      "Possible bleeding if traumatized"
     ],
     riskFactors: [
       "Genetic predisposition",
-      "Trauma or injury",
-      "Hormonal changes",
-      "Certain medical conditions",
+      "Premature birth",
+      "Female gender (for hemangiomas)",
+      "Certain syndromes (Sturge-Weber, Klippel-Trenaunay)"
     ],
     nextSteps: [
-      "Consult a dermatologist",
-      "Laser therapy",
-      "Monitor for changes",
-      "Surgical options if necessary",
-    ],
-  },
+      "Dermatologist evaluation",
+      "Pulsed dye laser treatment",
+      "Oral medications for problematic hemangiomas",
+      "Cosmetic camouflage",
+      "Surgical options for certain cases"
+    ]
+  }
 };
